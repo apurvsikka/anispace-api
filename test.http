@@ -1,0 +1,2 @@
+GET 'https://api.myanimelist.net/v2/anime/30230?fields=pictures,background' \
+-H 'Authorization: Bearer 5f7e4e4197390bc4699c538af0b02e1d'

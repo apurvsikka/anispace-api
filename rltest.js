@@ -1,34 +1,38 @@
-// test-rate-limit.js
-const fetch = require("node-fetch");
-const API_URL = "http://localhost:3000/api/manga/latest";
+// getIframeLink.js
+const fetch = require('node-fetch');
 
-const TOTAL_REQUESTS = 20;
-const DELAY_MS = 200;
+const BASE_URL = 'https://123animehub.cc';
 
-async function delay(ms) {
-  return new Promise((res) => setTimeout(res, ms));
+const episodePath = process.argv[2]; // e.g. one-piece/1
+const server = process.argv[3]; // e.g. vidstreaming.io
+
+if (!episodePath || !server) {
+	console.error('Usage: node getIframeLink.js <episodePath> <serverName>');
+	process.exit(1);
 }
 
-async function sendRequest(i) {
-  try {
-    const res = await fetch(API_URL, {
-      headers: {
-        "x-forwarded-for": "1.2.3.4",
-      },
-    });
-
-    const text = await res.text();
-    console.log(
-      `#${i + 1}: ${res.status} ${res.statusText} - ${text.slice(0, 100)}`
-    );
-  } catch (err) {
-    console.error(`#${i + 1}: ERROR - ${err.message}`);
-  }
-}
+const url = `${BASE_URL}/ajax/episode/info?epr=${encodeURIComponent(episodePath + '/' + server)}`;
+console.log(url);
+const headers = {
+	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+	Referer: BASE_URL + '/',
+	Origin: BASE_URL,
+	'X-Requested-With': 'XMLHttpRequest',
+};
 
 (async () => {
-  for (let i = 0; i < TOTAL_REQUESTS; i++) {
-    await sendRequest(i);
-    await delay(DELAY_MS);
-  }
+	try {
+		const res = await fetch(url, { headers });
+		if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+
+		const json = await res.json();
+
+		if (json && json.target) {
+			console.log('🎯 Target Iframe URL:\n' + json.target);
+		} else {
+			console.error('⚠️ No target found in response:', json);
+		}
+	} catch (err) {
+		console.error('❌ Error fetching iframe link:', err.message);
+	}
 })();
