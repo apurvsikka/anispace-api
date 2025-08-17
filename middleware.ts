@@ -5,8 +5,9 @@ const maxRequests = 10;
 
 const ipRequestMap = new Map<string, { count: number; timestamp: number }>();
 const ORIGIN_WHITELIST = [
-	'https://anispaceapi.vercel.app',
+	'https://anispace-api.vercel.app',
 	'http://localhost:3000',
+	'::ffff',
 ];
 
 setInterval(
