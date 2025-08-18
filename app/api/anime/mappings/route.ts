@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import { NextRequest, NextResponse } from 'next/server';
-import { ANIMEHUB, ANIMEGG, KAIZE } from '..';
+import { HIANIME, ANIMEPAHE, ANILIST_GQL, AnimePageAniListQuery } from '..';
 // maxpage on animegg: 25035
 //maxpage on 123animehub: 1
 
@@ -16,72 +16,79 @@ function slugify(text: string) {
 		.replace(/-+/g, '-');
 }
 
+type AniListID = number;
+
+type MediaType = 'ANIME' | 'MANGA' | null;
+
 export async function GET(req: NextRequest) {
 	const { searchParams } = new URL(req.url);
-	let id: string | null = searchParams.get('id');
-	let kaize: string = '';
-	let AnimePlanet: string = '';
-	!id ? console.error('no id provided') : (kaize = `${KAIZE}/anime/${id}`);
-	!id ? console.error('no id provided') : (AnimePlanet = `${KAIZE}/anime/${id}`);
-	console.log(kaize);
+	let id: AniListID | null = JSON.parse(searchParams.get('id') as string);
+	let mtype: MediaType | null = searchParams.get('type') as MediaType;
+	const alid = id;
 	let results: any = [];
+	// const ald = []; //test variable
 
 	try {
-		const { data: kaizeData } = await axios.get(kaize);
-		const $ = Cheerio.load(kaizeData);
-		const romaji = $('.right > .main-datas > .name-from > h1')
-			.text()
-			.trim();
-		const english = $(
-			'.details-list > .element:nth-of-type(1) > span.value'
-		)
-			.text()
-			.trim();
-		const animeggID = slugify(english);
-		const animehubID = id;
-		const synopsis = $('.synopsis.keep-break')
-			.text()
-			.trim()
-			.split('\n')
-			.join('');
+		const alres = fetch(ANILIST_GQL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			body: JSON.stringify({
+				query: AnimePageAniListQuery,
+				variables: {
+					mediaId: id,
+					mediaType: mtype,
+				},
+			}),
+		});
+		const alresdata = await (await alres).json();
+		// console.log(alresdata);
+		const coverImage = alresdata['data']['Media']['coverImage'];
+		const bannerImage = alresdata['data']['Media']['bannerImage'];
+		const duration = alresdata['data']['Media']['duration'];
+		const externalLinks = alresdata['data']['Media']['externalLinks'];
+		const isAdult = alresdata['data']['Media']['isAdult'];
+		const meanScore = alresdata['data']['Media']['meanScore'];
+		const relations = alresdata['data']['Media']['relations']['edges'];
 
-		let mappingsprovider: string = `https://find-my-anime.dtimur.de/api?id=${animeggID}&provider=AnimePlanet&collectionConsent=false`;
+		// ald.push();
+		let mappingsprovider: string = `https://find-my-anime.dtimur.de/api?id=${id}&provider=Anilist&collectionConsent=false`;
 		const amres = fetch(mappingsprovider);
 		const amresdata = await (await amres).json();
-		const type = amresdata[0].type 
-		const episodes = await amresdata[0].episodes
-		const released = await amresdata[0].animeSeason
-		const status = await amresdata[0].status
-		const synonyms = await amresdata[0].synonyms
+		const type = amresdata[0].type;
+		const episodes = await amresdata[0].episodes;
+		const released = await amresdata[0].animeSeason;
+		const status = await amresdata[0].status;
+		const synonyms = await amresdata[0].synonyms;
 		const metaMappings = await amresdata[0].providerMapping;
-		const studios = await amresdata[0].studios
-		const producers = await amresdata[0].producers
-
+		const studios = await amresdata[0].studios;
+		const producers = await amresdata[0].producers;
 
 		results = {
-			title: {
-				romaji,
-				english,
-			},
-			id: {
-				animeggID,
-				animehubID,
-			},
+			bannerImage,
+			coverImage,
 			metaMappings,
-			episodes,
+			type,
+			isAdult,
 			status,
+			meanScore,
+			duration,
+			episodes,
 			released,
+			synonyms,
 			studios,
 			producers,
-			synopsis,
-			synonyms,
-			type,
+			externalLinks,
+			relations,
 		};
 	} catch (err) {
 		console.error('ERROR:', err);
 	}
 
 	return NextResponse.json({
+		// ald,
 		results,
 	});
 }
