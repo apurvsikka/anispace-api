@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const rateLimitWindowMs = 60 * 1000;
-const maxRequests = 10;
+const maxRequests = 100000000000000000;
 
 const ipRequestMap = new Map<string, { count: number; timestamp: number }>();
 const ORIGIN_WHITELIST = [
