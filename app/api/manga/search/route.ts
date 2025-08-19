@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 	}
 
 	const formattedQuery = query.trim().replace(/\s+/g, '_').toLowerCase();
-	const url = `https://example.com/search/story/${formattedQuery}`;
+	const url = `https://mangakakalot.gg/search/story/${formattedQuery}`;
 
 	let pageLimit = 999;
 	let totalResults = 0;
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 			headers: {
 				'User-Agent':
 					'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-				referer: 'https://example.com',
+				referer: 'https://mangakakalot.gg',
 			},
 		});
 
