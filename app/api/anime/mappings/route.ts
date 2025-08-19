@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 				query: AnimePageAniListQuery,
 				variables: {
 					mediaId: id,
-					mediaType: mtype,
+					mediaType: 'ANIME',
 				},
 			}),
 		});

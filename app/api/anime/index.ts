@@ -59,6 +59,51 @@ const AnimePageAniListQuery = `query Media($mediaId: Int $mediaType: MediaType) 
     }
   }
 }`;
+
+const AnimeNameAniListQuery = `query Media($mediaId: Int) {
+  Media(id: $mediaId) {
+    id
+    isAdult
+    title {
+      english
+      native
+      romaji
+    }
+    seasonYear
+  }
+}`;
+
+const AnimeSearchAniListQuery = `
+query ($search: String, $page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      currentPage
+      hasNextPage
+      lastPage
+      perPage
+      total
+    }
+    media(search: $search, type: ANIME) {
+      id
+      title {
+        romaji
+        english
+        native
+      }
+      coverImage {
+        medium
+        large
+      }
+      format
+      status
+      episodes
+      popularity
+      averageScore
+      bannerImage
+    }
+  }
+}
+`;
 export {
 	HIANIME,
 	ANIMEPAHE,
@@ -66,4 +111,6 @@ export {
 	ANIMEPLANET,
 	ANILIST_GQL,
 	AnimePageAniListQuery,
+	AnimeNameAniListQuery,
+	AnimeSearchAniListQuery,
 };
