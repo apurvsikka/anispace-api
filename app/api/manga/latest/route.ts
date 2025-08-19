@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 				.find('.list-story-item-wrap-chapter')
 				.text()
 				.trim();
-			const id = link?.split('/').pop() ?? '';
+			const id = link?.split('/manga/').pop() ?? '';
 			const description = $(element)
 				.find('p')
 				.text()
