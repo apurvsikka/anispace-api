@@ -25,37 +25,37 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			const location = req.nextUrl.origin;
 
 		const mangaInfo = {
-			title: $(".manga-info-text > li > h1").text().trim(),
+			title: $('.manga-info-text > li > h1').text().trim(),
 			image: `${location}/api/manga/thumb/${id}`,
 			altTitle:
-				$(".story-alternative")
+				$('.story-alternative')
 					.text()
 					.trim()
-					.split(":")[1]
+					.split(':')[1]
 					?.trim()
-					.split(" / ") || [],
-			authors: $(".manga-info-text > li:nth-child(2) > a")
+					.split(' / ') || [],
+			authors: $('.manga-info-text > li:nth-child(2) > a')
 				.map((_, el) => $(el).text().trim())
 				.get(),
-			description: $("#contentBox")
+			description: $('#contentBox')
 				.text()
 				.trim()
-				.split("summary: ")[1]
-				?.replace(/\s+/g, " ")
-				.replace(/\n/g, ""),
+				.split('summary: ')[1]
+				?.replace(/\s+/g, ' ')
+				.replace(/\n/g, ''),
 			status:
-				$(".manga-info-text > li:nth-child(3)")
+				$('.manga-info-text > li:nth-child(3)')
 					.text()
 					.trim()
-					.split(":")[1]
-					?.trim() || "",
+					.split(':')[1]
+					?.trim() || '',
 			genres,
 			updatedOn:
-				$(".manga-info-text > li:nth-child(4)")
+				$('.manga-info-text > li:nth-child(4)')
 					.text()
 					.trim()
-					.split("updated : ")[1]
-					.split(" ") || [],
+					.split('updated : ')[1]
+					.split(' ') || [],
 			chapters: [] as {
 				chapterName: string;
 				chapterNumber: string | null;
@@ -63,19 +63,30 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			}[],
 		};
 
-		$(".chapter-list > .row").each((_, element) => {
-			const chapterName = $(element).find("span > a").attr("title") || "";
-			const chapterLink = $(element).find("span > a").attr("href");
-			const chapterNumberMatch = chapterLink?.match(/chapter-(\d+)/);
-			const chapterNumber = chapterNumberMatch ? chapterNumberMatch[1] : null;
-			const timeOfUpload = $(element).find("span:nth-child(3)").text().trim();
+		$('.chapter-list > .row').each((_, element) => {
+			const chapterName = $(element).find('span > a').attr('title') || '';
+			const chapterLink = $(element)
+				.find('span > a')
+				.attr('href')
+				?.split('/')[4][5];
+			const chapterLinkStat =
+				$(element).find('span > a').attr('href')?.split('/') ?? [];
+			const chapterNumberMatch =
+				chapterLinkStat[5]?.match(/chapter-(\d+)/);
+			const chapterNumber = chapterNumberMatch
+				? chapterNumberMatch[1]
+				: null;
+			const timeOfUpload = $(element)
+				.find('span:nth-child(3)')
+				.text()
+				.trim();
 
 			mangaInfo.chapters.push({
 				chapterName,
 				chapterNumber,
-				timeOfUpload: timeOfUpload.includes("ago")
+				timeOfUpload: timeOfUpload.includes('ago')
 					? timeOfUpload
-					: timeOfUpload.split(" "),
+					: timeOfUpload.split(' '),
 			});
 		});
 
