@@ -9,8 +9,7 @@ export async function GET(
   try {
     const { id, chapter, ht, img } = context.params;
 
-    const host =
-      ht === '1' ? 'imgs-2.2xstorage.com' : 'img-r1.2xstorage.com';
+    const host = ht === '2' ? 'imgs-2.2xstorage.com' : 'img-r1.2xstorage.com';
 
     const url = `https://${host}/${encodeURIComponent(id)}/${chapter}/${img}.webp`;
     console.log("Fetching:", url);
