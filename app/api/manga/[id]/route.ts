@@ -23,10 +23,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 				.map((genre) => genre.trim())
 				.filter((g) => g !== "") ?? [];
 			const location = req.nextUrl.origin;
+		const image = `${location}/api/manga/thumb/${encodeURIComponent(`${$('.comic-info-wrap').find('.thumbnail-wrap img').attr('src')}`)}`;
 
 		const mangaInfo = {
 			title: $('.manga-info-text > li > h1').text().trim(),
-			image: `${location}/api/manga/thumb/${id}`,
+			image,
 			altTitle:
 				$('.story-alternative')
 					.text()

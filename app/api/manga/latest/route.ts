@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 				.trim()
 				.replace(/\s+/g, ' ')
 				.replace(/\n/g, ' ');
-			const image = `${location}/api/manga/thumb/${id}`;
+			const image = `${location}/api/manga/thumb/${encodeURIComponent(`${$(element).find('img').attr('src')}`)}`;
 
 			results.push({
 				id,

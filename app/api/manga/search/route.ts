@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
 						.split(' ')[1]
 				) || 'N/A';
 			const id = link?.split('/').pop() ?? null;
-			const image = `${location}/api/manga/thumb/${id}`;
+			const image = `${location}/api/manga/thumb/${encodeURIComponent(`${$(element).find('img').attr('src')}`)}`;
 
 			results.push({ id, title, image, link, latestChapter });
 

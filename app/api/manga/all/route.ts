@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 				.text()
 				.trim();
 			const id = link.split('/').pop() ?? '';
-			const image = `${location}/api/manga/thumb/${id}`;
+			const image = `${location}/api/manga/thumb/${encodeURIComponent(`${$(element).find('img').attr('src')}`)}`;
 			const description = $(element)
 				.find('p')
 				.text()

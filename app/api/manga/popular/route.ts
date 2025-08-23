@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 					.find('h3 a')
 					.attr('href')
 					?.replace(`${BASE_URL}/manga/`, '') || '';
-			const image = `${location}/api/manga/thumb/${id}`;
+			const image = `${location}/api/manga/thumb/${encodeURIComponent(`${$(element).find('img').attr('src')}`)}`;
 			const latestChapter = $(element)
 				.find('.list-story-item-wrap-chapter')
 				.text()
