@@ -33,11 +33,7 @@ export async function GET(
 			if (!src) return;
 			// Extract the unique part of the URL to use in your API image route
 			const pageUrl = src.split('/')[5].split('.')[0];
-			const origin = src.includes('img-r1.2xstorage.com')
-				? 1
-				: src.includes('img-r1.2xstorage.com')
-					? 2
-					: 1;
+			const origin = src.includes('img-r1.2xstorage.com') ? 1 : 2;
 			mangaPages.push(
 				`${location}/api/manga/${id}/chapter/${chapter}/image/${origin}/${pageUrl}`
 			);
