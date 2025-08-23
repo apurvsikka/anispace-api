@@ -31,15 +31,12 @@ export async function GET(
 		$('.container-chapter-reader img').each((_, element) => {
 			const src = $(element).attr('src');
 			if (!src) return;
-			// Extract the unique part of the URL to use in your API image route
-			const pageUrl = src.split('/')[5].split('.')[0];
-			const origin = src.includes('img-r1.2xstorage.com') ? 2 : 1;
 			mangaPages.push(
-				`${location}/api/manga/${id}/chapter/${chapter}/image/${origin}/${pageUrl}`
+				`${location}/api/manga/${id}/chapter/${chapter}/thumb/${encodeURIComponent(src)}`
 			);
 		});
 
-		// Optional: remove the last image if needed
+
 		mangaPages.pop();
 
 		const response: MangaChapterInfo = {
