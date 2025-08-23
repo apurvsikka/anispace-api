@@ -32,7 +32,7 @@ export async function GET(
 			const src = $(element).attr('src');
 			if (!src) return;
 			mangaPages.push(
-				`${location}/api/manga/${id}/chapter/${chapter}/thumb/${encodeURIComponent(src)}`
+				`${location}/api/manga/thumb/${encodeURIComponent(src)}`
 			);
 		});
 
