@@ -35,18 +35,18 @@ query Media($id: Int) {
 
     `;
 
-    const response = await fetch("https://graphql.anilist.co", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        query: ALQUERY,
-        variables: { mediaId: id },
-      }),
-      cache: "no-store",
-    })
+    const response = await fetch('https://graphql.anilist.co', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+		},
+		body: JSON.stringify({
+			query: ALQUERY,
+			variables: { id: id },
+		}),
+		cache: 'no-store',
+	});
 
     const data = await response.json()
     const d = await data.data.Media.relations.edges
