@@ -8,25 +8,32 @@ export async function GET(
     const id = parseInt(params.id, 10) // ensure integer
 
     const ALQUERY = `
-      query Media($mediaId: Int) {
-        Media(id: $mediaId) {
-          relations {
-            edges {
-              relationType
-              node {
-                id
-                type
-                title {
-                  romaji
-                  english
-                  native
-                }
-              }
-            }
+query Media($id: Int) {
+  Media(id: $id) {
+    relations {
+      edges {
+        relationType
+        node {
+          id
+          type
+          title {
+            romaji
+            english
+            native
+          }
+          coverImage {
+            extraLarge
+            color
+            large
+            medium
           }
         }
       }
-    `
+    }
+  }
+}
+
+    `;
 
     const response = await fetch("https://graphql.anilist.co", {
       method: "POST",
