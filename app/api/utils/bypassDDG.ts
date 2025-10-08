@@ -6,9 +6,11 @@ import { wrapper } from 'axios-cookiejar-support';
 //  unused function , made in case animepahe cookie dies on me
 
 export async function scrapeUrl(targetUrl: string): Promise<string> {
-	if (!targetUrl.startsWith('https://animepahe.ru')) {
-		throw new Error('Blocked: Only animepahe.ru URLs are allowed , idk why , only animepahe uses ddg');
-	}
+	// if (!targetUrl.startsWith('https://animepahe.si')) {
+	// 	throw new Error(
+	// 		'Blocked: Only animepahe.si URLs are allowed , idk why , only animepahe uses ddg'
+	// 	);
+	// }
 
 	try {
 		const cookieJar = new CookieJar();
@@ -20,9 +22,22 @@ export async function scrapeUrl(targetUrl: string): Promise<string> {
 
 		const response = await client.get(targetUrl, {
 			headers: {
-				'User-Agent':
-					'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-				Referer: targetUrl,
+				authority: 'animepahe.si',
+				accept: 'application/json, text/javascript, */*; q=0.01',
+				'accept-language': 'en-US,en;q=0.9',
+				cookie: '__ddg2_=;',
+				dnt: '1',
+				'sec-ch-ua':
+					'"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+				'sec-ch-ua-mobile': '?0',
+				'sec-ch-ua-platform': '"Windows"',
+				'sec-fetch-dest': 'empty',
+				'sec-fetch-mode': 'cors',
+				'sec-fetch-site': 'same-origin',
+				'x-requested-with': 'XMLHttpRequest',
+				referer: targetUrl,
+				'user-agent':
+					'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0',
 			},
 			timeout: 30000,
 		});

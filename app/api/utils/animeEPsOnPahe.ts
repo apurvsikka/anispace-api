@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const ANIMEPAHE = 'https://animepahe.ru';
 
-export async function AnimeOnPahe(session: string,page:number = 1) {
+export async function AnimeOnPahe(session: string, page: number = 1) {
 	const url = `${ANIMEPAHE}/api?m=release&id=${encodeURIComponent(session)}&sort=episode_desc&page=${page}`;
-	console.log(url	)
+	console.log(url);
 	try {
 		const response = await axios.get(url, {
 			headers: {
@@ -27,7 +27,6 @@ export async function AnimeOnPahe(session: string,page:number = 1) {
 			},
 		});
 
-		// AnimePahe puts results inside .data.data
 		return response;
 	} catch (err: any) {
 		console.error('AnimePahe search error:', err.message);

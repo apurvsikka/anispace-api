@@ -27,15 +27,17 @@ export async function resolveAnimepaheSessionFromAlid(alid: string) {
 		const title = slugify(titleRaw.toLowerCase());
 
 		// Step 2: Search AnimePahe
-		const paheMatches = await searchAnimepahe(title);
-
+		// const paheMatches = await searchAnimepahe(title);
+		// const data = await paheMatches.json();
+		const paheRes = await searchAnimepahe(title);
+		const paheMatches = Array.isArray(paheRes.data) ? paheRes.data : [];
 		// Step 3: Filter by year
-		const match = paheMatches?.find((entry: any) => entry.year === year);
-
+		// const match = await paheMatches?.find((entry: any) => entry.year === year);
+		const match = paheMatches.find((entry: any) => entry.year === year);
 		if (!match) throw new Error('No matching entry on AnimePahe');
 
 		return {
-			animePahe: match.session
+			match,
 		};
 	} catch (err: any) {
 		console.error(' resolveAnimepaheSessionFromAlid error:', err.message);

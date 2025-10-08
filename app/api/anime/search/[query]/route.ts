@@ -37,18 +37,29 @@ export async function GET(
 		const enrichedResults = await Promise.all(
 			results.map(async (anime: any) => {
 				try {
-					const pahe = await resolveAnimepaheSessionFromAlid(anime.id);
-					return { ...anime, animePaheSession: pahe?.animePahe || null };
+					const pahe = await resolveAnimepaheSessionFromAlid(
+						anime.id
+					);
+					return {
+						...anime,
+						// animePaheSession: pahe?.session || null,
+						pahe,
+					};
 				} catch (err) {
-					console.warn(`Could not resolve AnimePahe session for AniList ID ${anime.id}`);
+					console.warn(
+						`Could not resolve AnimePahe session for AniList ID ${anime.id}`
+					);
 					return { ...anime, animePaheSession: null };
-				}	
+				}
 			})
 		);
 
 		return NextResponse.json({ pageInfo, results: enrichedResults });
 	} catch (err: any) {
 		console.error('Search route error:', err.message);
-		return NextResponse.json({ error: 'Failed to fetch AniList results' }, { status: 500 });
+		return NextResponse.json(
+			{ error: 'Failed to fetch AniList results' },
+			{ status: 500 }
+		);
 	}
 }

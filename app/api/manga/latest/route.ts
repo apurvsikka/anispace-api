@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 		const $ = cheerio.load(data);
 		const results: any[] = [];
 
-		$('.list-truyen-item-wrap').each((_, element) => {
+		$('.list-comic-item-wrap').each((_, element) => {
 			const title = $(element).find('h3 > a').text().trim();
 			const link = $(element).find('h3 > a').attr('href');
 			const latestChapter = $(element)

@@ -1,7 +1,4 @@
-let HIANIME: string = 'https://hianime.to';
-let ANIMEPAHE: string = 'https://animepahe.ru';
-let KAIZE: string = 'https://kaize.io';
-let ANIMEPLANET: string = 'https://anime-planet.com';
+let ANIMEPAHE_URL: string = 'https://animepahe.ru';
 let ANILIST_GQL: string = 'https://graphql.anilist.co';
 
 const AnimePageAniListQuery = `query Media($mediaId: Int $mediaType: MediaType) {
@@ -90,6 +87,9 @@ query ($search: String, $page: Int, $perPage: Int) {
         english
         native
       }
+      description
+      format
+      countryOfOrigin
       coverImage {
         medium
         large
@@ -105,10 +105,7 @@ query ($search: String, $page: Int, $perPage: Int) {
 }
 `;
 export {
-	HIANIME,
-	ANIMEPAHE,
-	KAIZE,
-	ANIMEPLANET,
+	ANIMEPAHE_URL,
 	ANILIST_GQL,
 	AnimePageAniListQuery,
 	AnimeNameAniListQuery,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import { NextRequest, NextResponse } from 'next/server';
-import { HIANIME, ANIMEPAHE, ANILIST_GQL, AnimePageAniListQuery } from '..';
+import { ANILIST_GQL, AnimePageAniListQuery } from '..';
 // maxpage on animegg: 25035
 //maxpage on 123animehub: 1
 

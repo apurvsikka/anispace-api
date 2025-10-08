@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 		const results: any[] = [];
 		const location = req.nextUrl.origin;
 
-		$('.list-truyen-item-wrap').each((_, element) => {
+		$('.list-comic-item-wrap').each((_, element) => {
 			const title = $(element).find('h3 > a').text().trim();
 			const id =
 				$(element)
